@@ -4,17 +4,10 @@
 
 bool ft_philo_init(t_philo *philo, int index, t_env *env)
 {
-    pthread_mutex_t *swap_fork;
-
     if (index < env->len)
         philo->fork[0] = &env->forks[index];
     if (env->len > 1)
         philo->fork[1] = &env->forks[(index + 1) % env->len];
-    if (index & 1 && env->len > 1) {
-        swap_fork = philo->fork[0];
-        philo->fork[0] = philo->fork[1];
-        philo->fork[1] = swap_fork;
-    }
     philo->id = index + 1;
     philo->meals = 0;
     philo->env = env;
@@ -36,7 +29,6 @@ bool ft_philo_done(t_philo *philo)
 {
     pthread_mutex_lock(&philo->mutex);
     pthread_mutex_lock(&philo->env->mutex);
-    /* philo->done = !philo->env->ok || (philo->meals != -1 && philo->meals >= philo->env->meals); */
     if (!philo->env->ok)
 	philo->done = true;
     else if (philo->env->meals == -1)
