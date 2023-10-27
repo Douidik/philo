@@ -8,13 +8,14 @@ FILES = \
 	main.c \
 	philo.c \
 	simulation.c \
-	util.c
+	util.c \
+	job.c
 
 SRC = $(addprefix $(SRC_DIR)/,$(FILES))
 OBJ = $(addprefix $(BIN_DIR)/,$(FILES:.c=.o))
 INC = -I $(SRC_DIR)
 LNK = -Lpthread
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread -DTSAN_OPTIONS=second_deadlock_stack=1
 
 all: $(NAME)
 
